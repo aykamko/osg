@@ -230,69 +230,63 @@ void FirstPersonManipulator::init( const GUIEventAdapter& ea, GUIActionAdapter& 
    _velocity = 0.;
 }
 
-
-// doc in parent
-bool FirstPersonManipulator::handleMouseWheel( const GUIEventAdapter& ea, GUIActionAdapter& us )
+bool FirstPersonManipulator::handleKeyDown( const GUIEventAdapter& ea, GUIActionAdapter& us )
 {
-    osgGA::GUIEventAdapter::ScrollingMotion sm = ea.getScrollingMotion();
 
-    // handle centering
-    if( _flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT )
-    {
-
-        if( ((sm == GUIEventAdapter::SCROLL_DOWN) && (_wheelMovement > 0.)) ||
-            ((sm == GUIEventAdapter::SCROLL_UP)   && (_wheelMovement < 0.)) )
+    switch(ea.getKey()) {
+        case GUIEventAdapter::KEY_Up:
         {
-
-            // stop thrown animation
-            _thrown = false;
-
-            if( getAnimationTime() <= 0. )
-
-                // center by mouse intersection (no animation)
-                setCenterByMousePointerIntersection( ea, us );
-
-            else {
-
-                // start new animation only if there is no animation in progress
-                if( !isAnimating() )
-                    startAnimationByMousePointerIntersection( ea, us );
-
-            }
-        }
-    }
-
-    switch( sm )
-    {
-
-        // mouse scroll up event
-        case GUIEventAdapter::SCROLL_UP:
-        {
-            // move forward
-            moveForward( isAnimating() ? dynamic_cast< FirstPersonAnimationData* >( _animationData.get() )->_targetRot : _rotation,
-                         -_wheelMovement * (getRelativeFlag( _wheelMovementFlagIndex ) ? _modelSize : 1. ));
+            moveForward(750.0);
             us.requestRedraw();
             us.requestContinuousUpdate( isAnimating() || _thrown );
             return true;
         }
 
-        // mouse scroll down event
-        case GUIEventAdapter::SCROLL_DOWN:
+        case GUIEventAdapter::KEY_Down:
         {
             // move backward
-            moveForward( _wheelMovement * (getRelativeFlag( _wheelMovementFlagIndex ) ? _modelSize : 1. ));
-            _thrown = false;
+            moveForward(-750.0);
             us.requestRedraw();
             us.requestContinuousUpdate( isAnimating() || _thrown );
             return true;
         }
 
-        // unhandled mouse scrolling motion
+        case GUIEventAdapter::KEY_Right:
+        {
+            moveRight(200.0);
+            us.requestRedraw();
+            us.requestContinuousUpdate( isAnimating() || _thrown );
+            return true;
+        }
+
+        case GUIEventAdapter::KEY_Left:
+        {
+            // move left
+            moveRight(-200.0);
+            us.requestRedraw();
+            us.requestContinuousUpdate( isAnimating() || _thrown );
+            return true;
+        }
+
         default:
             return false;
+
     }
+
+    return false;
 }
 
+bool FirstPersonManipulator::handleMouseMove( const GUIEventAdapter& ea, GUIActionAdapter& us )
+{
+    addMouseEvent( ea );
+
+    if( performMovement() )
+        us.requestRedraw();
+
+    us.requestContinuousUpdate( false );
+
+    return true;
+}
 
 // doc in parent
 bool FirstPersonManipulator::performMovementLeftMouseButton( const double /*eventTimeDelta*/, const double dx, const double dy )
