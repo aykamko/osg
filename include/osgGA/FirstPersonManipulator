@@ -56,6 +56,7 @@ class OSGGA_EXPORT FirstPersonManipulator : public StandardManipulator
         virtual void setMaxVelocity( const double& maxVelocity, bool relativeToModelSize = false );
         double getMaxVelocity( bool *relativeToModelSize = NULL ) const;
 
+
         virtual void setWheelMovement( const double& wheelMovement, bool relativeToModelSize = false );
         double getWheelMovement( bool *relativeToModelSize = NULL ) const;
 
@@ -66,7 +67,8 @@ class OSGGA_EXPORT FirstPersonManipulator : public StandardManipulator
 
     protected:
 
-        virtual bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        virtual bool handleKeyDown( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        virtual bool handleMouseMove( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
 
         virtual bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy );
         virtual bool performMouseDeltaMovement( const float dx, const float dy );
