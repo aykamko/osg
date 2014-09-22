@@ -191,6 +191,9 @@ DerivedData
 #
 # Pods/
 
+<<<<<<< HEAD
 ### Custom ###
 bin/
 *.pc
+=======
+>>>>>>> 322fe20... updated FirstPersonManipulator, added gitignore, added some YCM setup stuff
