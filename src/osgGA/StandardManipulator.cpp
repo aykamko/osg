@@ -481,8 +481,8 @@ bool StandardManipulator::performMovementRightMouseButton( const double /*eventT
 /// The method processes events for manipulation based on relative mouse movement (mouse delta).
 bool StandardManipulator::handleMouseDeltaMovement( const GUIEventAdapter& ea, GUIActionAdapter& us )
 {
-    float dx = ea.getX() - _mouseCenterX;
-    float dy = ea.getY() - _mouseCenterY;
+    float dx = ea.getXnormalized() - (2.0f*(_mouseCenterX-ea.getXmin())/(ea.getXmax()-ea.getXmin())-1.0f);
+    float dy = ea.getYnormalized() - -(2.0f*(_mouseCenterY-ea.getYmin())/(ea.getYmax()-ea.getYmin())-1.0f);
 
     if( dx == 0.f && dy == 0.f )
         return false;
