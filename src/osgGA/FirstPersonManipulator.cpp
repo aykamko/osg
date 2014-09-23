@@ -208,17 +208,13 @@ double FirstPersonManipulator::getWheelMovement( bool *relativeToModelSize ) con
 }
 
 
-void FirstPersonManipulator::home( double currentTime )
-{
-   inherited::home( currentTime );
-   _velocity = 0.;
-}
-
-
 void FirstPersonManipulator::home( const GUIEventAdapter& ea, GUIActionAdapter& us )
 {
    inherited::home( ea, us );
+
+   // stop movement and center mouse pointer
    _velocity = 0.;
+   centerMousePointer( ea, us );
 }
 
 
@@ -226,8 +222,9 @@ void FirstPersonManipulator::init( const GUIEventAdapter& ea, GUIActionAdapter& 
 {
    inherited::init( ea, us );
 
-   // stop movement
+   // stop movement and center mouse pointer
    _velocity = 0.;
+   centerMousePointer( ea, us );
 }
 
 bool FirstPersonManipulator::handleKeyDown( const GUIEventAdapter& ea, GUIActionAdapter& us )
@@ -278,9 +275,7 @@ bool FirstPersonManipulator::handleKeyDown( const GUIEventAdapter& ea, GUIAction
 
 bool FirstPersonManipulator::handleMouseMove( const GUIEventAdapter& ea, GUIActionAdapter& us )
 {
-    addMouseEvent( ea );
-
-    if( performMovement() )
+    if( handleMouseDeltaMovement( ea, us ) )
         us.requestRedraw();
 
     us.requestContinuousUpdate( false );

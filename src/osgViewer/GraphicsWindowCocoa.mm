@@ -1552,6 +1552,7 @@ void GraphicsWindowCocoa::requestWarpPointer(float x,float y)
     point.y = y + _traits->y;
     
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4
+    // CGWarpMouseCursorPosition(point);
     CGEventRef warpEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, point, kCGMouseButtonLeft);
     CGEventPost(kCGHIDEventTap, warpEvent);
     CFRelease(warpEvent);

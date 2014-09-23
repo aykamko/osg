@@ -61,8 +61,6 @@ class OSGGA_EXPORT FirstPersonManipulator : public StandardManipulator
         double getWheelMovement( bool *relativeToModelSize = NULL ) const;
 
         virtual void home( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
-        virtual void home( double );
-
         virtual void init( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
 
     protected:
